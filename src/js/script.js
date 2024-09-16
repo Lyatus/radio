@@ -8,9 +8,9 @@ function api_filepath(filename) {
 
 window.addEventListener('load', async function() {
   const music_queue = [];
-  const config_select_el = document.getElementById('configuration');
 
-  const audio_el = this.document.getElementsByTagName('audio')[0];
+  // Setup audio element
+  const audio_el = document.getElementsByTagName('audio')[0];
   let need_audio = true;
   const music_dequeue = () => {
     if(music_queue.length > 0) {
@@ -22,11 +22,11 @@ window.addEventListener('load', async function() {
     }
   };
   audio_el.addEventListener('ended', () => {
-    need_audio = true;
     music_dequeue();
   });
 
   // Setup configuration menu
+  const config_select_el = document.getElementById('configuration');
   const configs = await api('/steve/configurations');
   for(let config of configs) {
     const config_el = this.document.createElement('option');
@@ -41,9 +41,8 @@ window.addEventListener('load', async function() {
   });
 
   // Setup queue mechanism
-  const time_to_preload = 10;
   const update_queue = async () => {
-    if(music_queue.length == 0 && (need_audio || audio_el.duration - audio_el.currentTime < time_to_preload)) {
+    if(music_queue.length == 0) {
       const steve_gen = await api(`/steve/generate?configuration=${config_select_el.value}`, {
         method: 'POST'
       });
@@ -60,5 +59,10 @@ window.addEventListener('load', async function() {
     setTimeout(update_queue, 1000);
   };
 
+  // Setup buttons
+  const skip_button_el = document.getElementById('skip_button');
+  skip_button_el.addEventListener('click', () => {
+    music_dequeue();
+  });
   await update_queue();
 });
