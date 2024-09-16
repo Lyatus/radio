@@ -1,0 +1,27 @@
+* {
+	background: none;
+	border-collapse: collapse;
+	border-spacing: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	line-height: 1;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	quotes: none;
+	text-decoration: none;
+	vertical-align: baseline;
+  outline: none;
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}

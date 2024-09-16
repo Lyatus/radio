@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Sans&family=Merriweather&display=swap');
+
+body {
+  font-family: "Fira Sans", sans-serif;
+  margin: auto;
+  width: calc(min(100%, 768px));
+}
+
+h1 {
+  font-size: 62px;
+  text-align: center;
+  padding: 24px;
+}
+
+main {
+  text-align: center;
+}
