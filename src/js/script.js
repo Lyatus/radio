@@ -24,6 +24,9 @@ window.addEventListener('load', async function() {
   audio_el.addEventListener('ended', () => {
     music_dequeue();
   });
+  audio_el.addEventListener('error', () => {
+    need_audio = true;
+  });
 
   // Setup configuration menu
   const config_select_el = document.getElementById('configuration');
