@@ -5,6 +5,14 @@ async function api(path, init) {
 function api_filepath(filename) {
   return `${api_endpoint}/tmp/${filename}`
 }
+async function download(url) {
+  const response = await fetch(url)
+  const blob = await response.blob();
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = url.split('/').pop();
+  link.click();
+}
 
 window.addEventListener('load', async function() {
   const music_queue = [];
@@ -67,5 +75,10 @@ window.addEventListener('load', async function() {
   skip_button_el.addEventListener('click', () => {
     music_dequeue();
   });
+  const download_button_el = document.getElementById('download_button');
+  download_button_el.addEventListener('click', async () => {
+    await download(audio_el.src);
+  });
+
   await update_queue();
 });
