@@ -70,11 +70,15 @@ window.addEventListener('load', async function() {
     setTimeout(update_queue, 1000);
   };
 
+  const skip = () => {
+    music_dequeue();
+  }
+
+  this.navigator.mediaSession.setActionHandler('nexttrack', skip);
+
   // Setup buttons
   const skip_button_el = document.getElementById('skip_button');
-  skip_button_el.addEventListener('click', () => {
-    music_dequeue();
-  });
+  skip_button_el.addEventListener('click', skip);
   const download_button_el = document.getElementById('download_button');
   download_button_el.addEventListener('click', async () => {
     await download(audio_el.src);
