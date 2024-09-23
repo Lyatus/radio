@@ -16,6 +16,7 @@ async function download(url) {
 
 window.addEventListener('load', async function() {
   const config_select_el = document.getElementById('configuration');
+  const download_button_el = document.getElementById('download_button');
   const music_queue = [];
 
   // Setup audio element
@@ -41,7 +42,10 @@ window.addEventListener('load', async function() {
           },
         ],
       });
-      this.document.title = new_music_title
+      this.document.title = new_music_title;
+      download_button_el.addEventListener('click', async () => {
+        await download(api_filepath(new_music.sequence));
+      });
     } else {
       need_audio = true;
     }
@@ -92,10 +96,7 @@ window.addEventListener('load', async function() {
   // Setup buttons
   const skip_button_el = document.getElementById('skip_button');
   skip_button_el.addEventListener('click', music_dequeue);
-  const download_button_el = document.getElementById('download_button');
-  download_button_el.addEventListener('click', async () => {
-    await download(audio_el.src);
-  });
+
 
   await update_queue();
 });
