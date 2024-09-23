@@ -36,7 +36,7 @@ window.addEventListener('load', async function() {
         album: config_select_el.value,
         artwork: [
           {
-            src: location.hostname+"/src/img/icon.png",
+            src: location.origin+"/src/img/icon.png",
             sizes: "48x48",
             type: "image/png",
           },
