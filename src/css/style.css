@@ -16,6 +16,10 @@ main {
   text-align: center;
 }
 
+audio {
+  width: 100%;
+}
+
 p {
   margin: 1em 0em;
 }
