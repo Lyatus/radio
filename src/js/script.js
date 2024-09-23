@@ -21,6 +21,7 @@ window.addEventListener('load', async function() {
 
   // Setup audio element
   const audio_el = document.getElementsByTagName('audio')[0];
+  audio_el.volume = 0.5; // Start at half volume because Robin is very loud
   let need_audio = true;
   const music_dequeue = async () => {
     if(music_queue.length > 0) {
