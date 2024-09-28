@@ -30,7 +30,7 @@ window.addEventListener('load', async function() {
       audio_el.play();
       need_audio = false;
       const new_music_desc = await (await fetch(api_filepath(current_music.description))).json();
-      const new_music_title = `${new_music_desc.scale} ${new_music_desc.tempo}bpm ${new_music_desc.signature.beats_per_bar}/${new_music_desc.signature.beat_value}`;
+      const new_music_title = `${new_music_desc.scale.name} ${new_music_desc.tempo}bpm ${new_music_desc.signature.beats_per_bar}/${new_music_desc.signature.beat_value}`;
       navigator.mediaSession.metadata = new MediaMetadata({
         title: new_music_title,
         artist: "Steve & Robin",
