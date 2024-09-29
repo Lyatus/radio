@@ -1,9 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans&family=Merriweather&display=swap');
 
+* {
+  color: white;
+}
+
 body {
   font-family: "Fira Sans", sans-serif;
   margin: auto;
   width: calc(min(100%, 768px));
+  background-color: #111;
 }
 
 h1 {
@@ -16,12 +21,12 @@ main {
   text-align: center;
 }
 
-audio {
-  width: 100%;
+section, p {
+  margin: 1em 0em;
 }
 
-p {
-  margin: 1em 0em;
+audio {
+  width: 100%;
 }
 
 button {
@@ -29,4 +34,11 @@ button {
 }
 button:hover {
   cursor: pointer;
+}
+
+#sheet > span {
+  background-color: #531d5b;
+  padding: 4px;
+  margin: 2px;
+  border-radius: 8px;
 }

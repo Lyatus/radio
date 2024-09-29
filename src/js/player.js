@@ -11,6 +11,8 @@ class Player {
     this.config = 'sane';
 
     navigator.mediaSession.setActionHandler('nexttrack', () => this.dequeue());
+
+    this.sheet = new Sheet();
   }
 
   set_config(config) {
@@ -66,7 +68,7 @@ class Player {
         ],
       });
       document.title = new_music_title;
-
+      this.sheet.set_music(new_music_desc);
     } else {
       this.need_audio = true;
     }
