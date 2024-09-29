@@ -15,46 +15,10 @@ async function download(url) {
 }
 
 window.addEventListener('load', async function() {
-  const config_select_el = document.getElementById('configuration');
-  const music_queue = [];
-  let current_music = {}
-
-  // Setup audio element
-  const audio_el = document.getElementsByTagName('audio')[0];
-  audio_el.volume = 0.5; // Start at half volume because Robin is very loud
-  let need_audio = true;
-  const music_dequeue = async () => {
-    if(music_queue.length > 0) {
-      current_music = music_queue.pop();
-      audio_el.src = api_filepath(current_music.audio)
-      audio_el.play();
-      need_audio = false;
-      const new_music_desc = await (await fetch(api_filepath(current_music.description))).json();
-      const new_music_title = `${new_music_desc.scale.name} ${new_music_desc.tempo}bpm ${new_music_desc.signature.beats_per_bar}/${new_music_desc.signature.beat_value}`;
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: new_music_title,
-        artist: "Steve & Robin",
-        album: config_select_el.value,
-        artwork: [
-          {
-            src: location.origin+"/src/img/icon.png",
-            sizes: "48x48",
-            type: "image/png",
-          },
-        ],
-      });
-      this.document.title = new_music_title;
-
-    } else {
-      need_audio = true;
-    }
-  };
-  audio_el.addEventListener('ended', music_dequeue);
-  audio_el.addEventListener('error', () => {
-    need_audio = true;
-  });
+  const player = new Player();
 
   // Setup configuration menu
+  const config_select_el = document.getElementById('configuration');
   const configs = await api('/steve/configurations');
   for(let config of configs) {
     const config_el = this.document.createElement('option');
@@ -62,43 +26,19 @@ window.addEventListener('load', async function() {
     config_el.innerText = config; // TODO: make prettier
     config_select_el.appendChild(config_el);
   }
-  config_select_el.value = 'sane'; // Decent default
+  config_select_el.value = player.config;
   config_select_el.addEventListener('change', () => {
-    music_queue.length = 0;
-    need_audio = true;
+    player.set_config(this.value);
   });
 
-  // Setup queue mechanism
-  const update_queue = async () => {
-    if(music_queue.length == 0) {
-      const steve_gen = await api(`/steve/generate?configuration=${config_select_el.value}`, {
-        method: 'POST'
-      });
-
-      const robin_render = await api(`/robin/render?filename=${steve_gen.sequence}`, {
-        method: 'POST'
-      });
-
-      music_queue.push({
-        ...steve_gen,
-        ...robin_render,
-      });
-    }
-    if(music_queue.length > 0 && need_audio) {
-      await music_dequeue();
-    }
-    setTimeout(update_queue, 1000);
-  };
-
-  navigator.mediaSession.setActionHandler('nexttrack', music_dequeue);
 
   // Setup buttons
   const skip_button_el = document.getElementById('skip_button');
-  skip_button_el.addEventListener('click', music_dequeue);
+  skip_button_el.addEventListener('click', () => player.dequeue());
   const download_button_el = document.getElementById('download_button');
   download_button_el.addEventListener('click', async () => {
-    await download(api_filepath(current_music.sequence));
+    await download(api_filepath(player.current_music.sequence));
   });
 
-  await update_queue();
+  await player.update_queue();
 });

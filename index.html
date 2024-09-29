@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Radio</title>
     <link rel="shortcut icon" href="src/img/icon.png">
+    <script type="text/javascript" src="src/js/player.js"></script>
     <script type="text/javascript" src="src/js/script.js"></script>
     <link rel="stylesheet" media="screen" type="text/css" href="src/css/reset.css">
     <link rel="stylesheet" media="screen" type="text/css" href="src/css/style.css">
@@ -12,15 +13,17 @@
   <body>
     <h1>Radio</h1>
     <main>
-      <p>
+      <section id="controls">
         <p>
           <label for="configuration">Configuration: </label>
           <select id="configuration" name="configuration"></select>
         </p>
         <button id="skip_button" title="Skip">⏭️</button>
         <button id="download_button" title="Download">💾</button>
-      </p>
-      <audio controls autoplay></audio>
+      </section>
+      <section id="audio">
+        <audio controls autoplay></audio>
+      </section>
     </main>
   </body>
 </html>
