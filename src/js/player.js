@@ -29,11 +29,15 @@ class Player {
         method: 'POST'
       });
 
-      this.queue.push({
+      const new_music = {
         config: this.config,
         ...steve_gen,
         ...robin_render,
-      });
+      };
+
+      new_music.description = await (await fetch(api_filepath(new_music.description))).json();
+
+      this.queue.push(new_music);
     }
     if(this.queue.length > 0 && this.need_audio) {
       await this.dequeue();
@@ -41,13 +45,13 @@ class Player {
     setTimeout(() => this.update_queue(), 1000);
   };
 
-  async dequeue() {
+  dequeue() {
     if(this.queue.length > 0) {
       this.current_music = this.queue.pop();
       this.audio.src = api_filepath(this.current_music.audio)
       this.audio.play();
       this.need_audio = false;
-      const new_music_desc = await (await fetch(api_filepath(this.current_music.description))).json();
+      const new_music_desc = this.current_music.description;
       const new_music_title = `${new_music_desc.scale.name} ${new_music_desc.tempo}bpm ${new_music_desc.signature.beats_per_bar}/${new_music_desc.signature.beat_value}`;
       navigator.mediaSession.metadata = new MediaMetadata({
         title: new_music_title,
