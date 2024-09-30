@@ -3,7 +3,6 @@
 body {
   font-family: "Fira Sans", sans-serif;
   margin: auto;
-  width: calc(min(100%, 768px));
 }
 
 body, select {
@@ -36,10 +35,67 @@ button:hover {
   cursor: pointer;
 }
 
-#sheet > span {
+#sheet span {
   display: inline-block;
   background-color: #531d5b;
   padding: 4px;
   margin: 4px;
   border-radius: 8px;
+}
+
+#sheet wrapper {
+  display: block;
+  overflow-x: scroll;
+}
+
+#sheet table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+#sheet table td {
+  width: 40px;
+  border-radius: 8px;
+  vertical-align: middle;
+}
+
+#sheet table :not(.beats) td {
+  padding: 4px 0px;
+}
+
+#sheet table td:first-child {
+  width: 200px;
+  text-align: left;
+}
+
+#sheet table .pointer {
+  display: block;
+  border-bottom: #531d5b solid;
+  position: relative;
+  z-index: -1;
+  padding: 0px;
+}
+
+#sheet table .bars td {
+  background-color: #652e8473;
+}
+
+#sheet table .chords td {
+  background-color: #b77fd8ad;
+}
+
+#sheet table .track:nth-child(even) td {
+  background-color: #793e6fad;
+}
+
+#sheet table .track:nth-child(odd) td {
+  background-color: #874191ad;
+}
+
+#sheet table .track span {
+  background-color: #2a003e;
+}
+
+#sheet table :not(.track) td:first-child {
+  background-color: transparent;
 }

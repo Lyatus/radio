@@ -13,6 +13,8 @@ class Player {
     navigator.mediaSession.setActionHandler('nexttrack', () => this.dequeue());
 
     this.sheet = new Sheet();
+    //this.audio.addEventListener('timeupdate', () => this.sheet.set_time(this.audio.currentTime));  // This is too irregular
+    setInterval(() => this.sheet.set_time(this.audio.currentTime), 30);
   }
 
   set_config(config) {
