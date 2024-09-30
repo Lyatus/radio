@@ -37,8 +37,9 @@ button:hover {
 }
 
 #sheet > span {
+  display: inline-block;
   background-color: #531d5b;
   padding: 4px;
-  margin: 2px;
+  margin: 4px;
   border-radius: 8px;
 }
