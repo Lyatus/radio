@@ -17,7 +17,7 @@ class Player {
 
   set_config(config) {
     this.config = config;
-    this.queue.length = 0;
+    this.queue = [];
     this.need_audio = true;
   }
 
