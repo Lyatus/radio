@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Sans&family=Merriweather&display=swap');
 
-* {
-  color: white;
-}
-
 body {
   font-family: "Fira Sans", sans-serif;
   margin: auto;
   width: calc(min(100%, 768px));
+}
+
+body, select {
+  color: white;
   background-color: #111;
 }
 
