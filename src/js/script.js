@@ -40,5 +40,6 @@ window.addEventListener('load', async function() {
     await download(api_filepath(player.current_music.sequence));
   });
 
+  document.body.classList.add('loading');
   await player.update_queue();
 });

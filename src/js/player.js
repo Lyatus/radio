@@ -20,7 +20,7 @@ class Player {
   set_config(config) {
     this.config = config;
     this.queue = [];
-    this.need_audio = true;
+    this.dequeue();
   }
 
   async update_queue() {
@@ -75,8 +75,10 @@ class Player {
       });
       document.title = new_music_title;
       this.sheet.set_music(new_music_desc);
+      document.body.classList.remove('loading');
     } else {
       this.need_audio = true;
+      document.body.classList.add('loading');
     }
   }
 }
