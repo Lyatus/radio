@@ -128,6 +128,7 @@ button:hover {
   vertical-align: top;
   font-size: 10px;
   image-rendering: pixelated;
+  outline: 1px #2a003e solid;
 }
 
 #sheet table .track span {
