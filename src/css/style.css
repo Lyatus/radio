@@ -69,7 +69,7 @@ button:hover {
   display: inline-block;
   background-color: #531d5b;
   padding: 4px;
-  margin: 4px;
+  margin: 2px;
   border-radius: 8px;
 }
 
@@ -120,6 +120,15 @@ button:hover {
 
 #sheet table .track:nth-child(odd) td {
   background-color: #874191ad;
+}
+
+#sheet table .track td:not(:first-child) {
+  border-radius: 0px;
+  background-size: 100% 100%;
+  text-align: left;
+  vertical-align: top;
+  font-size: 10px;
+  image-rendering: pixelated;
 }
 
 #sheet table .track span {

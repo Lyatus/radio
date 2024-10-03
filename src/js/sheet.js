@@ -32,10 +32,11 @@ class Sheet {
     this.section_el.style.display = 'none';
 
     this.previous_time = -1;
+
+    this.pattern_canvas = document.createElement('canvas');
   }
 
   set_music(desc) {
-    console.log(desc);
     this.desc = desc;
     this.scale_el.innerText = `Scale: ${notes[desc.scale.key]} ${desc.scale.name}`;
     const duration = Math.floor(desc.duration);
@@ -58,7 +59,7 @@ class Sheet {
     bar_cells.push(document.createElement('td')); // Dummy for pointer column
     for(let i = 0; i < desc.beat_count; i += desc.signature.beats_per_bar) {
       const bar_cell = document.createElement('td');
-      bar_cell.innerText = i / desc.signature.beats_per_bar;
+      bar_cell.innerText = (i / desc.signature.beats_per_bar) + 1;
       bar_cell.colSpan = desc.signature.beats_per_bar;
       bar_cells.push(bar_cell);
     }
@@ -110,8 +111,12 @@ class Sheet {
       for(let pattern_id of track.pattern_list) {
         const pattern = track.patterns[pattern_id];
         const pattern_cell = document.createElement('td');
-        pattern_cell.innerText = `Pattern #${pattern_id+1}`;
+        const pattern_cell_number = document.createElement('span');
+        pattern_cell_number.innerText = `#${pattern_id+1}`;
+        pattern_cell.appendChild(pattern_cell_number);
         pattern_cell.colSpan = pattern.size * desc.signature.beats_per_bar;
+        pattern_cell.style.backgroundImage = `url('${this.get_pattern_image(track, pattern)}')`;
+        pattern_cell.style.height = `${pattern.img_height*2}px`;
         track_row.appendChild(pattern_cell);
       }
 
@@ -136,5 +141,29 @@ class Sheet {
       inline: 'center',
     });
     this.previous_time = t;
+  }
+
+  get_pattern_image(track, pattern) {
+    if(pattern.img) {
+      return pattern.img;
+    }
+
+    const min_tone = track.min_tone - (track.min_tone % 12); // Use octave boundaries
+    const max_tone = track.max_tone + (track.max_tone % 12 ? 12 : 0);
+    const height = pattern.img_height = max_tone - min_tone;
+
+    this.pattern_canvas.width = pattern.size * this.desc.bar_ticks;
+    this.pattern_canvas.height = height;
+    const context = this.pattern_canvas.getContext('2d');
+    context.clearRect(0, 0, this.pattern_canvas.width, this.pattern_canvas.height);
+    context.fillStyle = '#fff'
+    for(let i = 0; i < pattern.note_starts.length; i++) {
+      const start = pattern.note_starts[i];
+      const duration = pattern.note_durations[i];
+      const tone = pattern.note_tones[i];
+      context.fillRect(start, height - (tone - min_tone) - 1, duration, 1);
+    }
+
+    return pattern.img = this.pattern_canvas.toDataURL();
   }
 }
