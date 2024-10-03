@@ -25,7 +25,8 @@ class Player {
 
   async update_queue() {
     if(this.queue.length == 0) {
-      const steve_gen = await api(`/steve/generate?configuration=${this.config}`, {
+      const music_config = this.config;
+      const steve_gen = await api(`/steve/generate?configuration=${music_config}`, {
         method: 'POST'
       });
 
@@ -34,14 +35,17 @@ class Player {
       });
 
       const new_music = {
-        config: this.config,
+        config: music_config,
         ...steve_gen,
         ...robin_render,
       };
 
       new_music.description = await (await fetch(api_filepath(new_music.description))).json();
 
-      this.queue.push(new_music);
+      // Check config is still wanted
+      if(this.config == music_config) {
+        this.queue.push(new_music);
+      }
     }
     if(this.queue.length > 0 && this.need_audio) {
       await this.dequeue();
