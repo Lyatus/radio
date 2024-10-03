@@ -18,6 +18,7 @@ class Player {
   }
 
   set_config(config) {
+    this.audio.pause();
     this.config = config;
     this.queue = [];
     this.dequeue();
