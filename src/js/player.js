@@ -17,11 +17,11 @@ class Player {
     setInterval(() => this.sheet.set_time(this.audio.currentTime), 30);
   }
 
-  set_config(config) {
+  async set_config(config) {
     this.audio.pause();
     this.config = config;
     this.queue = [];
-    this.dequeue();
+    await this.dequeue();
   }
 
   async update_queue() {
@@ -54,7 +54,7 @@ class Player {
     setTimeout(() => this.update_queue(), 1000);
   };
 
-  dequeue() {
+  async dequeue() {
     if(this.queue.length > 0) {
       this.current_music = this.queue.pop();
       this.audio.src = api_filepath(this.current_music.audio)
@@ -75,7 +75,7 @@ class Player {
         ],
       });
       document.title = new_music_title;
-      this.sheet.set_music(new_music_desc);
+      await this.sheet.set_music(new_music_desc);
       document.body.classList.remove('loading');
     } else {
       this.need_audio = true;

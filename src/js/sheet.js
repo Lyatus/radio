@@ -34,9 +34,16 @@ class Sheet {
     this.previous_time = -1;
 
     this.pattern_canvas = document.createElement('canvas');
+    this.object_urls = [];
   }
 
-  set_music(desc) {
+  async set_music(desc) {
+    // Revoke all previous object URLs for memory
+    for(let url of this.object_urls){
+      URL.revokeObjectURL(url);
+    }
+    this.object_urls = [];
+
     this.desc = desc;
     this.scale_el.innerText = `Scale: ${notes[desc.scale.key]} ${desc.scale.name}`;
     const duration = Math.floor(desc.duration);
@@ -115,7 +122,7 @@ class Sheet {
         pattern_cell_number.innerText = `#${pattern_id+1}`;
         pattern_cell.appendChild(pattern_cell_number);
         pattern_cell.colSpan = pattern.size * desc.signature.beats_per_bar;
-        pattern_cell.style.backgroundImage = `url('${this.get_pattern_image(track, pattern)}')`;
+        pattern_cell.style.backgroundImage = `url('${await this.get_pattern_image(track, pattern)}')`;
         pattern_cell.style.height = `${pattern.img_height*2}px`;
         track_row.appendChild(pattern_cell);
       }
@@ -143,7 +150,7 @@ class Sheet {
     this.previous_time = t;
   }
 
-  get_pattern_image(track, pattern) {
+  async get_pattern_image(track, pattern) {
     if(pattern.img) {
       return pattern.img;
     }
@@ -164,6 +171,10 @@ class Sheet {
       context.fillRect(start, height - (tone - min_tone) - 1, duration, 1);
     }
 
-    return pattern.img = this.pattern_canvas.toDataURL();
+    const blob = await new Promise(resolve => this.pattern_canvas.toBlob(resolve));
+    pattern.img = URL.createObjectURL(blob);
+    this.object_urls.push(pattern.img)
+
+    return pattern.img;
   }
 }
