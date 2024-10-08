@@ -34,16 +34,11 @@ class Sheet {
     this.previous_time = -1;
 
     this.pattern_canvas = document.createElement('canvas');
-    this.object_urls = [];
   }
 
-  async set_music(desc) {
-    // Revoke all previous object URLs for memory
-    for(let url of this.object_urls){
-      URL.revokeObjectURL(url);
-    }
-    this.object_urls = [];
-
+  async set_music(music) {
+    const desc = music.description;
+    this.music = music;
     this.desc = desc;
     this.scale_el.innerText = `Scale: ${notes[desc.scale.key]} ${desc.scale.name}`;
     const duration = Math.floor(desc.duration);
@@ -173,7 +168,7 @@ class Sheet {
 
     const blob = await new Promise(resolve => this.pattern_canvas.toBlob(resolve));
     pattern.img = URL.createObjectURL(blob);
-    this.object_urls.push(pattern.img)
+    this.music.object_urls.push(pattern.img)
 
     return pattern.img;
   }

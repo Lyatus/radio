@@ -5,14 +5,6 @@ async function api(path, init) {
 function api_filepath(filename) {
   return `${api_endpoint}/tmp/${filename}`
 }
-async function download(url) {
-  const response = await fetch(url)
-  const blob = await response.blob();
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = url.split('/').pop();
-  link.click();
-}
 
 window.addEventListener('load', async function() {
   const player = new Player();
@@ -31,15 +23,13 @@ window.addEventListener('load', async function() {
     await player.set_config(e.target.value);
   });
 
-
   // Setup buttons
-  const skip_button_el = document.getElementById('skip_button');
-  skip_button_el.addEventListener('click', () => player.dequeue());
+  const previous_button_el = document.getElementById('previous_button');
+  previous_button_el.addEventListener('click', () => player.change_track(-1));
+  const next_button_el = document.getElementById('next_button');
+  next_button_el.addEventListener('click', () => player.change_track(+1));
   const download_button_el = document.getElementById('download_button');
-  download_button_el.addEventListener('click', async () => {
-    await download(api_filepath(player.current_music.sequence));
-  });
+  download_button_el.addEventListener('click', () => player.download_current_music());;
 
-  document.body.classList.add('loading');
-  await player.update_queue();
+  await player.update_playlist();
 });
