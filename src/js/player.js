@@ -18,11 +18,12 @@ class Player {
     document.body.classList.add('loading');
   }
 
-  async set_config(config) {
+  set_config(config) {
     this.audio.pause();
+    this.clear_playlist();
     this.config = config;
-    this.queue = [];
-    await this.play_music();
+    this.play_next_music = true;
+    document.body.classList.add('loading');
   }
 
   async change_track(offset) {

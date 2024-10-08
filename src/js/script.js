@@ -19,8 +19,8 @@ window.addEventListener('load', async function() {
     config_select_el.appendChild(config_el);
   }
   config_select_el.value = player.config;
-  config_select_el.addEventListener('change', async e => {
-    await player.set_config(e.target.value);
+  config_select_el.addEventListener('change', e => {
+    player.set_config(e.target.value);
   });
 
   // Setup buttons
